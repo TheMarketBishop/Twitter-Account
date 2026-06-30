@@ -134,9 +134,108 @@
   .wordmark{margin-left:auto;font-family:'Sora',sans-serif;font-weight:800;font-size:14px;letter-spacing:2px;
     color:var(--amber);text-shadow:0 0 14px rgba(255,170,0,0.3)}
 
-  @media(max-width:760px){
-    .hero{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}
-    table.holdings{font-size:10.5px}
+  /* =========================================================
+     RESPONSIVE — preserves 1080px screenshot fidelity;
+     collapses gracefully for tablet and phone viewers.
+     ========================================================= */
+
+  /* tablet */
+  @media (max-width: 900px){
+    .head{padding:26px 26px 22px}
+    .body{padding:18px 22px 12px}
+    .foot{padding:16px 22px}
+    .hero{grid-template-columns:1fr 1fr}
+    .hero .hcard.big{grid-column:1 / -1}
+    .actstrip{grid-template-columns:1fr 1fr}
+    .actstrip .astat:first-child{grid-column:1 / -1}
+    .grid{grid-template-columns:1fr}
+    .splitcols{grid-template-columns:1fr;gap:18px}
+    table.holdings{font-size:11.5px}
+    table.holdings td,table.holdings th{padding:7px 7px}
+    .brandtext h1{font-size:24px}
+    .pill{margin-left:0}
+  }
+
+  /* phone */
+  @media (max-width: 600px){
+    body{padding:16px 10px;gap:20px}
+    .sheet{border-radius:14px}
+    .head{padding:20px 18px 18px}
+    .head .tag{font-size:13px;margin-top:14px}
+    .body{padding:14px 14px 10px}
+    .foot{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 18px}
+    .wordmark{margin-left:0;font-size:12px;letter-spacing:1.5px}
+    .fnotes{font-size:10.5px}
+
+    .brandrow{gap:12px}
+    .logo{width:38px;height:38px;border-radius:10px}
+    .logo svg{width:22px;height:22px}
+    .brandtext h1{font-size:21px}
+    .brandtext .sub{font-size:11px;letter-spacing:2px}
+    .pill{font-size:10px;padding:5px 11px}
+
+    .hero{grid-template-columns:1fr}
+    .hero .hcard,.hero .hcard.big{grid-column:auto}
+    .hcard{padding:14px 16px}
+    .hcard .hval{font-size:24px}
+    .hcard.big .hval{font-size:28px}
+    .hlabel{font-size:9.5px;letter-spacing:1.1px}
+    .hsub{font-size:11px}
+
+    .section-label{margin-top:18px}
+    .section-label h2{font-size:14px}
+    .hint{font-size:10.5px}
+
+    .actstrip{grid-template-columns:1fr;gap:8px}
+    .astat{padding:12px 14px}
+    .astat .av{font-size:18px}
+    .astat .al{font-size:9.5px}
+    .astat .ah{font-size:10px}
+
+    /* horizontally scroll the wide positions tables — preserves all columns */
+    .body > table.holdings{
+      display:block;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      white-space:nowrap;
+      max-width:100%;
+    }
+    table.holdings{font-size:11px}
+    table.holdings td,table.holdings th{padding:6px 8px}
+
+    /* movers cards */
+    .card{padding:14px 14px}
+    .cmd{font-size:12px}
+    .mv{font-size:12px;grid-template-columns:1fr auto auto;gap:8px}
+
+    /* monthly chart — tighten the right column */
+    .mrow{grid-template-columns:34px 1fr 110px;gap:9px}
+    .mrow .ml{font-size:11px}
+    .mval{font-size:12px;gap:6px}
+    .mval .wl{font-size:9px;min-width:44px}
+
+    /* ticker rank bars */
+    .tkrow{grid-template-columns:44px 1fr 78px;gap:8px}
+    .tkrow .tn{font-size:11px}
+    .tkv{font-size:11px}
+
+    .colhd{font-size:10px;margin-bottom:8px}
+
+    /* allocation legend wraps */
+    .alloclegend{flex-wrap:wrap;gap:8px 12px}
+  }
+
+  /* very narrow phones */
+  @media (max-width: 380px){
+    .hero{gap:0}
+    .hcard{padding:12px 14px}
+    .hcard .hval{font-size:21px}
+    .hcard.big .hval{font-size:24px}
+    .brandtext h1{font-size:19px}
+    .section-label h2{font-size:13px}
+    .mrow{grid-template-columns:30px 1fr 95px;gap:7px}
+    .tkrow{grid-template-columns:40px 1fr 70px;gap:7px}
+    .hint{display:none}
   }
 /* group count chip */
 tr.grp .gcount{float:right;color:var(--muted2);font-weight:500;letter-spacing:1px}
