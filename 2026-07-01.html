@@ -1,0 +1,1159 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Market Bishop — Portfolio Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>  :root{
+    --bg:#04060c;--bg2:#070b14;--card:#0a0f1c;--card2:#0c1322;
+    --border:rgba(120,160,220,0.14);--border-soft:rgba(120,160,220,0.08);
+    --cyan:#00dcff;--cyan-dim:#0792ad;--amber:#ffaa00;--green:#00ff78;
+    --orange:#ff6a14;--purple:#a64dff;--pink:#ff5fb4;--red:#ff4d52;
+    --white:#e9f1ff;--muted:#6f8099;--muted2:#4a586e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'JetBrains Mono',monospace;
+    background:
+      radial-gradient(900px 500px at 12% -8%, rgba(0,220,255,0.10), transparent 60%),
+      radial-gradient(820px 480px at 100% 0%, rgba(255,170,0,0.07), transparent 55%),
+      radial-gradient(700px 600px at 50% 120%, rgba(166,77,255,0.08), transparent 60%),
+      var(--bg);
+    color:var(--white);display:flex;flex-direction:column;align-items:center;gap:34px;justify-content:flex-start;padding:40px 20px;min-height:100vh;
+  }
+  .sheet{
+    width:1080px;max-width:100%;
+    background:linear-gradient(180deg, var(--bg2), var(--bg));
+    border:1px solid var(--border);border-radius:20px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(0,0,0,0.4), 0 40px 120px rgba(0,0,0,0.6);
+  }
+  .pos{color:var(--green)} .neg{color:var(--red)} .flat{color:var(--muted)}
+  .cyan{color:var(--cyan)} .white{color:var(--white)}
+
+  /* header */
+  .head{position:relative;padding:34px 40px 28px;border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg, rgba(0,220,255,0.05), transparent),var(--card);}
+  .head::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.6;}
+  .brandrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .logo{width:46px;height:46px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg, rgba(0,220,255,0.16), rgba(166,77,255,0.14));
+    border:1px solid rgba(0,220,255,0.35);box-shadow:0 0 18px rgba(0,220,255,0.25);}
+  .logo svg{width:26px;height:26px}
+  .brandtext{display:flex;flex-direction:column;gap:2px}
+  .brandtext h1{font-family:'Sora',sans-serif;font-weight:800;font-size:27px;letter-spacing:.5px;
+    color:var(--white);line-height:1.05;text-shadow:0 0 18px rgba(0,220,255,0.35);}
+  .brandtext .sub{font-size:12.5px;color:var(--amber);font-weight:500;letter-spacing:2.5px;}
+  .head .tag{margin-top:18px;font-size:14px;color:var(--muted);line-height:1.6;max-width:820px;}
+  .head .tag b{color:var(--cyan);font-weight:700}
+  .pill{margin-left:auto;align-self:flex-start;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;
+    letter-spacing:1.5px;color:var(--green);background:rgba(0,255,120,0.08);
+    border:1px solid rgba(0,255,120,0.3);border-radius:999px;padding:7px 14px;display:flex;align-items:center;gap:7px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+
+  /* hero summary */
+  .hero{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;gap:1px;
+    background:var(--border-soft);border-bottom:1px solid var(--border);}
+  .hcard{background:linear-gradient(160deg,var(--card2),var(--card));padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
+  .hcard.big{background:linear-gradient(160deg,rgba(0,220,255,0.07),var(--card));}
+  .hlabel{font-size:10.5px;letter-spacing:1.5px;color:var(--muted2);font-weight:500}
+  .hval{font-family:'Sora',sans-serif;font-weight:800;font-size:26px;letter-spacing:.3px;line-height:1;}
+  .hcard.big .hval{font-size:34px;text-shadow:0 0 18px rgba(0,220,255,0.25)}
+  .hsub{font-size:11.5px;color:var(--muted);font-weight:500}
+
+  /* allocation */
+  .allocwrap{padding:16px 40px 4px;}
+  .allocbar{display:flex;height:10px;border-radius:6px;overflow:hidden;border:1px solid var(--border-soft);}
+  .seg{display:block;height:100%}
+  .seg.cash{background:linear-gradient(90deg,#0792ad,#00dcff)}
+  .seg.eq{background:linear-gradient(90deg,#00b85a,#00ff78)}
+  .seg.etf{background:var(--amber)}
+  .seg.idx{background:var(--purple)}
+  .alloclegend{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;font-size:11.5px;color:var(--muted)}
+  .alloclegend i.k{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:middle}
+  i.k.cash{background:#00dcff} i.k.eq{background:#00ff78} i.k.etf{background:var(--amber)} i.k.idx{background:var(--purple)}
+
+  /* body / sections */
+  .body{padding:22px 40px 14px}
+  .section-label{display:flex;align-items:center;gap:12px;margin:22px 0 14px;}
+  .section-label:first-child{margin-top:6px}
+  .section-label .ico{width:30px;height:30px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);}
+  .section-label .ico svg{width:17px;height:17px}
+  .section-label h2{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+  .section-label .hint{font-size:11.5px;color:var(--muted2);margin-left:auto;font-weight:400;}
+  .accent-cyan .ico{background:rgba(0,220,255,0.08);border-color:rgba(0,220,255,0.3)}
+  .accent-cyan .ico svg{color:var(--cyan)} .accent-cyan h2{color:var(--cyan)}
+  .accent-green .ico{background:rgba(0,255,120,0.08);border-color:rgba(0,255,120,0.3)}
+  .accent-green .ico svg{color:var(--green)} .accent-green h2{color:var(--green)}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--border-soft);
+    border-radius:13px;padding:16px 18px;position:relative;overflow:hidden;}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--cyan));opacity:.85;}
+  .card.green{--accent:var(--green)}.card.amber{--accent:var(--amber)}
+  .cmd{font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--white);letter-spacing:.3px;
+    margin-bottom:11px;display:flex;align-items:center;gap:9px;}
+  .cmd .slash{color:var(--accent,var(--green));font-size:12px}
+  .mvlist{display:flex;flex-direction:column;gap:8px}
+  .mv{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:baseline;font-size:13px;
+    padding-bottom:7px;border-bottom:1px dashed var(--border-soft);}
+  .mv:last-child{border-bottom:none;padding-bottom:0}
+  .mvn{color:var(--white);font-weight:500}
+  .mvd{font-weight:700;text-align:right;font-size:13px}
+  .mvp{text-align:right;font-size:11.5px;min-width:62px}
+
+  /* holdings table */
+  table.holdings{width:100%;border-collapse:collapse;font-size:12px;margin-top:2px}
+  table.holdings th{font-family:'Sora',sans-serif;font-weight:600;font-size:10px;letter-spacing:1px;
+    text-transform:uppercase;color:var(--muted2);padding:8px 9px;border-bottom:1px solid var(--border);text-align:right;}
+  table.holdings th.sym{text-align:left}
+  table.holdings td{padding:8px 9px;border-bottom:1px solid var(--border-soft);font-variant-numeric:tabular-nums;}
+  td.num{text-align:right;color:var(--white)}
+  td.num.dim{color:var(--muted)} td.num.strong{font-weight:700;color:var(--white)}
+  td.sym{text-align:left;white-space:nowrap}
+  .tk{color:var(--cyan);font-weight:700;font-size:12.5px}
+  .ttag{font-size:8.5px;letter-spacing:.8px;color:var(--muted2);border:1px solid var(--border-soft);
+    border-radius:4px;padding:1px 5px;margin-left:7px;vertical-align:middle}
+  .cl{font-size:10px;color:var(--cyan-dim);margin-top:2px}
+  tr.grp td{background:rgba(120,160,220,0.04);font-family:'Sora',sans-serif;font-weight:700;font-size:10px;
+    letter-spacing:1.5px;color:var(--amber);padding:9px;border-bottom:1px solid var(--border);text-transform:uppercase;}
+  tr.sub td{border-bottom:2px solid var(--border);border-top:1px solid var(--border-soft);
+    background:rgba(0,220,255,0.025);padding-top:9px;padding-bottom:9px;}
+  tr.sub .subname{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--muted)}
+  tr.sub.amber td{background:rgba(255,170,0,0.03)} tr.sub.purple td{background:rgba(166,77,255,0.03)}
+  tr:hover td{background:rgba(120,160,220,0.03)}
+
+  /* footer */
+  .foot{display:flex;align-items:center;gap:20px;padding:18px 40px;border-top:1px solid var(--border);
+    background:linear-gradient(180deg,transparent,rgba(0,220,255,0.03));}
+  .fnotes{display:flex;flex-direction:column;gap:7px;font-size:11px;color:var(--muted2)}
+  .fnotes span{display:flex;align-items:center;gap:8px}
+  .fnotes svg{width:14px;height:14px;flex:none;color:var(--muted2)}
+  .wordmark{margin-left:auto;font-family:'Sora',sans-serif;font-weight:800;font-size:14px;letter-spacing:2px;
+    color:var(--amber);text-shadow:0 0 14px rgba(255,170,0,0.3)}
+
+  /* =========================================================
+     RESPONSIVE — preserves screenshot fidelity at 1080px+;
+     collapses gracefully for tablet and phone viewers.
+     ========================================================= */
+
+  /* tablet */
+  @media (max-width: 900px){
+    .head{padding:26px 26px 22px}
+    .body{padding:18px 22px 12px}
+    .foot{padding:16px 22px}
+    .hero{grid-template-columns:1fr 1fr}
+    .hero .hcard.big{grid-column:1 / -1}
+    .actstrip{grid-template-columns:1fr 1fr}
+    .actstrip .astat:first-child{grid-column:1 / -1}
+    .grid{grid-template-columns:1fr}
+    .splitcols{grid-template-columns:1fr;gap:18px}
+    table.holdings{font-size:11.5px}
+    table.holdings td,table.holdings th{padding:7px 7px}
+    .brandtext h1{font-size:24px}
+    .pill{margin-left:0}
+  }
+
+  /* phone */
+  @media (max-width: 600px){
+    body{padding:16px 10px}
+    .sheet{border-radius:14px}
+    .head{padding:20px 18px 18px}
+    .head .tag{font-size:13px;margin-top:14px}
+    .body{padding:14px 14px 10px}
+    .foot{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 18px}
+    .wordmark{margin-left:0;font-size:12px;letter-spacing:1.5px}
+    .fnotes{font-size:10.5px}
+
+    .brandrow{gap:12px}
+    .logo{width:38px;height:38px;border-radius:10px}
+    .logo svg{width:22px;height:22px}
+    .brandtext h1{font-size:21px}
+    .brandtext .sub{font-size:11px;letter-spacing:2px}
+    .pill{font-size:10px;padding:5px 11px}
+
+    .hero{grid-template-columns:1fr}
+    .hero .hcard,.hero .hcard.big{grid-column:auto}
+    .hcard{padding:14px 16px}
+    .hcard .hval{font-size:24px}
+    .hcard.big .hval{font-size:28px}
+    .hlabel{font-size:9.5px;letter-spacing:1.1px}
+    .hsub{font-size:11px}
+
+    .section-label{margin-top:18px}
+    .section-label h2{font-size:14px}
+    .hint{font-size:10.5px}
+
+    .actstrip{grid-template-columns:1fr;gap:8px}
+    .astat{padding:12px 14px}
+    .astat .av{font-size:18px}
+    .astat .al{font-size:9.5px}
+    .astat .ah{font-size:10px}
+
+    /* horizontally scroll the wide positions table — preserves all columns */
+    .body > table.holdings{
+      display:block;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      white-space:nowrap;
+      max-width:100%;
+    }
+    table.holdings{font-size:11px}
+    table.holdings td,table.holdings th{padding:6px 8px}
+
+    /* movers cards */
+    .card{padding:14px 14px}
+    .cmd{font-size:12px}
+    .mv{font-size:12px;grid-template-columns:1fr auto auto;gap:8px}
+
+    /* monthly chart — tighten the right column */
+    .mrow{grid-template-columns:34px 1fr 110px;gap:9px}
+    .mrow .ml{font-size:11px}
+    .mval{font-size:12px;gap:6px}
+    .mval .wl{font-size:9px;min-width:44px}
+
+    /* ticker rank bars */
+    .tkrow{grid-template-columns:44px 1fr 78px;gap:8px}
+    .tkrow .tn{font-size:11px}
+    .tkv{font-size:11px}
+
+    .colhd{font-size:10px;margin-bottom:8px}
+  }
+
+  /* very narrow phones */
+  @media (max-width: 380px){
+    .hero{gap:0}
+    .hcard{padding:12px 14px}
+    .hcard .hval{font-size:21px}
+    .hcard.big .hval{font-size:24px}
+    .brandtext h1{font-size:19px}
+    .section-label h2{font-size:13px}
+    .mrow{grid-template-columns:30px 1fr 95px;gap:7px}
+    .tkrow{grid-template-columns:40px 1fr 70px;gap:7px}
+    .hint{display:none}
+  }
+/* group count chip */
+tr.grp .gcount{float:right;color:var(--muted2);font-weight:500;letter-spacing:1px}
+
+  /* ticker group (multi-contract underlying) */
+  tr.tgrp td{background:rgba(0,220,255,0.045);border-bottom:1px solid var(--border-soft);padding-top:10px;padding-bottom:10px;}
+  tr.tgrp .tk{font-size:13.5px}
+  .ccount{font-size:8.5px;letter-spacing:.8px;color:var(--cyan);background:rgba(0,220,255,0.08);
+    border:1px solid rgba(0,220,255,0.25);border-radius:4px;padding:1px 6px;margin-left:8px;vertical-align:middle;font-weight:700}
+  tr.child td{border-bottom:1px solid var(--border-soft);}
+  tr.child:last-of-type td{border-bottom:1px solid var(--border-soft);}
+  td.sym.kid{padding-left:24px;position:relative}
+  td.sym.kid .conn{color:var(--muted2);margin-right:8px}
+  td.sym.kid .cl{display:inline;margin-top:0;font-size:11px;color:var(--cyan-dim)}
+
+  /* today's activity */
+  .actstrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:2px 0 6px}
+  .astat{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--border-soft);
+    border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
+  .astat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--cyan));opacity:.85}
+  .astat.green{--accent:var(--green)} .astat.cyan{--accent:var(--cyan)} .astat.amber{--accent:var(--amber)}
+  .astat .al{font-size:10px;letter-spacing:1.3px;color:var(--muted2);font-weight:500;margin-bottom:6px}
+  .astat .av{font-family:'Sora',sans-serif;font-weight:800;font-size:21px;line-height:1}
+  .astat .ah{font-size:11px;color:var(--muted);margin-top:5px}
+  .badge{font-family:'Sora',sans-serif;font-size:9px;font-weight:700;letter-spacing:.6px;
+    padding:2px 7px;border-radius:5px;display:inline-block}
+  .badge.bto{color:var(--cyan);background:rgba(0,220,255,0.1);border:1px solid rgba(0,220,255,0.3)}
+  .badge.stc{color:var(--green);background:rgba(0,255,120,0.1);border:1px solid rgba(0,255,120,0.3)}
+  td.act{white-space:nowrap}
+  .fills{font-size:9px;color:var(--muted2);margin-left:7px;letter-spacing:.5px}
+.muted2{color:var(--muted2)}
+
+  /* sign colors must beat td.num/td.num.strong (placed last for tie-break) */
+  td.num.pos{color:var(--green)}
+  td.num.neg{color:var(--red)}
+  td.num.flat{color:var(--muted)}
+  td.num.muted2{color:var(--muted2)}
+  /* monthly diverging P&L chart */
+  .mbars{display:flex;flex-direction:column;gap:9px;margin:4px 0 4px}
+  .mrow{display:grid;grid-template-columns:42px 1fr 150px;gap:14px;align-items:center}
+  .mrow .ml{font-family:'Sora',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted)}
+  .mtrack{position:relative;height:22px;border-radius:6px;background:rgba(120,160,220,0.05);
+    border:1px solid var(--border-soft);overflow:hidden}
+  .mtrack::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border)}
+  .mbar{position:absolute;top:3px;bottom:3px;border-radius:4px}
+  .mbar.pos{left:50%;background:linear-gradient(90deg,rgba(0,255,120,0.5),var(--green))}
+  .mbar.neg{right:50%;background:linear-gradient(270deg,rgba(255,77,82,0.5),var(--red))}
+  .mval{text-align:right;font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;display:flex;justify-content:flex-end;gap:10px;align-items:baseline}
+  .mval .wl{font-size:10px;font-weight:500;color:var(--muted2);min-width:54px;text-align:left}
+
+  /* ticker rank bars */
+  .tkbars{display:flex;flex-direction:column;gap:7px}
+  .tkrow{display:grid;grid-template-columns:54px 1fr 92px;gap:10px;align-items:center}
+  .tkrow .tn{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;color:var(--cyan)}
+  .tkt{position:relative;height:16px;border-radius:5px;background:rgba(120,160,220,0.05);overflow:hidden}
+  .tkb{position:absolute;left:0;top:2px;bottom:2px;border-radius:4px}
+  .tkb.pos{background:linear-gradient(90deg,rgba(0,255,120,0.45),var(--green))}
+  .tkb.neg{background:linear-gradient(90deg,rgba(255,77,82,0.45),var(--red))}
+  .tkv{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;font-weight:700}
+  .splitcols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .colhd{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:.8px;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+  .colhd.g{color:var(--green)} .colhd.r{color:var(--red)}
+</style></head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <div class="brandrow">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#00dcff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.8L20 8l-4 3.9.9 5.5L12 15l-4.9 2.4L8 11.9 4 8l5.6-1.2z"/></svg></div>
+      <div class="brandtext"><h1>The Market Bishop</h1><span class="sub">PORTFOLIO CHALLENGE</span></div>
+      <div class="pill"><span class="dot"></span>JUL 1 2026</div>
+    </div>
+    <p class="tag">Daily portfolio snapshot — total account value, open gain/loss, cash, today&#x27;s trade activity, and full position breakdown.</p>
+  </div>
+  <div class="hero">
+  <div class="hcard big"><div class="hlabel">TOTAL ACCOUNT VALUE</div>
+    <div class="hval white">$400,781.03</div>
+    <div class="hsub">cash $178,308 &middot; invested $222,473</div></div>
+  <div class="hcard"><div class="hlabel">OPEN GAIN / LOSS</div>
+    <div class="hval neg">-$4,363.37</div>
+    <div class="hsub">-1.92% unrealized</div></div>
+  <div class="hcard"><div class="hlabel">DAY CHANGE</div>
+    <div class="hval neg">-$7,440.25</div>
+    <div class="hsub">-3.24% on held positions</div></div>
+  <div class="hcard"><div class="hlabel">CASH</div>
+    <div class="hval cyan">$178,307.80</div>
+    <div class="hsub">44.5% of account</div></div>
+  <div class="hcard"><div class="hlabel">INVESTED</div>
+    <div class="hval white">$222,473.23</div>
+    <div class="hsub">55.5% of account</div></div>
+</div>
+  <div class="body">
+    <div class="section-label accent-amber">
+  <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+  <h2>Today's Activity</h2><span class="hint">trade cash flow</span>
+</div>
+<div class="actstrip">
+  <div class="astat green"><div class="al">REALIZED TODAY</div><div class="av pos">+$620.23</div><div class="ah">+2.56% on $24,231.62 closed</div></div>
+  <div class="astat cyan"><div class="al">CLOSED</div><div class="av cyan">5 positions</div><div class="ah">2W / 3L &middot; $24,851.85 proceeds</div></div>
+  <div class="astat amber"><div class="al">REDEPLOYED</div><div class="av white">-$47,071.89</div><div class="ah">6 new opens &middot; net -$22,220.04 to cash</div></div>
+</div>
+<table class="holdings">
+  <thead><tr>
+    <th class="sym" style="width:56px">Action</th><th class="sym">Symbol</th>
+    <th class="num">Qty</th><th class="num">Amount</th><th class="num">Gain $</th><th class="num">Gain %</th>
+  </tr></thead>
+  <tbody>
+<tr class="grp"><td colspan="6">SELL TO CLOSE &middot; 5 positions &middot; 2W / 3L</td></tr>
+<tr>
+          <td class="act"><span class="badge stc">STC</span></td>
+          <td class="sym"><span class="tk">DE</span><div class="cl">$660C 02/19/27</div></td>
+          <td class="num">1</td>
+          <td class="num strong pos">+$5,995.22</td>
+          <td class="num pos">+$2,219.56</td>
+          <td class="num pos">+58.79%</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge stc">STC</span></td>
+          <td class="sym"><span class="tk">PENG</span><div class="cl">$80C 01/15/27</div></td>
+          <td class="num">3</td>
+          <td class="num strong pos">+$6,150.87</td>
+          <td class="num pos">+$148.88</td>
+          <td class="num pos">+2.48%</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge stc">STC</span></td>
+          <td class="sym"><span class="tk">MRK</span><div class="cl">$140C 03/19/27</div></td>
+          <td class="num">4</td>
+          <td class="num strong pos">+$2,917.28</td>
+          <td class="num neg">-$165.37</td>
+          <td class="num neg">-5.36%</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge stc">STC</span></td>
+          <td class="sym"><span class="tk">INTC</span><div class="cl">$170C 03/19/27</div></td>
+          <td class="num">1</td>
+          <td class="num strong pos">+$2,527.29</td>
+          <td class="num neg">-$693.37</td>
+          <td class="num neg">-21.53%</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge stc">STC</span></td>
+          <td class="sym"><span class="tk">TER</span><div class="cl">$580C 01/15/27</div></td>
+          <td class="num">1</td>
+          <td class="num strong pos">+$7,261.19</td>
+          <td class="num neg">-$889.47</td>
+          <td class="num neg">-10.91%</td>
+        </tr>
+<tr class="sub green"><td></td><td class="sym"><span class="subname">Realized today</span></td>
+      <td class="num"></td><td class="num strong pos">+$24,851.85</td>
+      <td class="num strong pos">+$620.23</td>
+      <td class="num pos">+2.56%</td></tr>
+<tr class="grp"><td colspan="6">BUY TO OPEN &middot; 6 new positions</td></tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">NOW</span><div class="cl">$125C 03/19/27</div></td>
+          <td class="num">5</td>
+          <td class="num strong">-$8,153.32</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">TWLO</span><div class="cl">$250C 03/19/27</div></td>
+          <td class="num">2</td>
+          <td class="num strong">-$6,619.33</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">NVDA</span><div class="cl">$210C 03/19/27</div></td>
+          <td class="num">3</td>
+          <td class="num strong">-$7,981.99</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">UPST</span><div class="cl">$40C 03/19/27</div></td>
+          <td class="num">8</td>
+          <td class="num strong">-$7,565.31</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">VLO</span><div class="cl">$280C 01/15/27</div></td>
+          <td class="num">3</td>
+          <td class="num strong">-$8,191.99</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr>
+          <td class="act"><span class="badge bto">BTO</span></td>
+          <td class="sym"><span class="tk">CELH</span><div class="cl">$37.5C 03/19/27</div></td>
+          <td class="num">15</td>
+          <td class="num strong">-$8,559.95</td>
+          <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td>
+        </tr>
+<tr class="sub"><td></td><td class="sym"><span class="subname">Capital deployed</span></td>
+      <td class="num"></td><td class="num strong">-$47,071.89</td>
+      <td class="num muted2">&mdash;</td><td class="num muted2">&mdash;</td></tr>
+  </tbody>
+</table>
+    <div class="section-label accent-cyan">
+  <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/></svg></div>
+  <h2>Top Movers</h2><span class="hint">open positions, by $ gain</span>
+</div>
+<div class="grid">
+  <div class="card green"><div class="cmd"><span class="slash">&#9650;</span>Biggest Winners</div><div class="mvlist"><div class="mv"><span class="mvn">TEM $70C</span>
+          <span class="mvd pos">+$2,409</span>
+          <span class="mvp pos">+73.5%</span></div>
+<div class="mv"><span class="mvn">DE $660C</span>
+          <span class="mvd pos">+$2,119</span>
+          <span class="mvp pos">+56.1%</span></div>
+<div class="mv"><span class="mvn">SNDK</span>
+          <span class="mvd pos">+$1,822</span>
+          <span class="mvp pos">+758.6%</span></div>
+<div class="mv"><span class="mvn">UNH $440C</span>
+          <span class="mvd pos">+$1,284</span>
+          <span class="mvp pos">+16.2%</span></div>
+<div class="mv"><span class="mvn">HIMS $44C</span>
+          <span class="mvd pos">+$1,234</span>
+          <span class="mvp pos">+39.1%</span></div></div></div>
+  <div class="card" style="--accent:#ff4d52"><div class="cmd"><span class="slash" style="color:#ff4d52">&#9660;</span>Biggest Drawdowns</div><div class="mvlist"><div class="mv"><span class="mvn">ON $120C</span>
+          <span class="mvd neg">-$2,811</span>
+          <span class="mvp neg">-43.9%</span></div>
+<div class="mv"><span class="mvn">NBIS $300C</span>
+          <span class="mvd neg">-$2,236</span>
+          <span class="mvp neg">-23.4%</span></div>
+<div class="mv"><span class="mvn">AMD $700C</span>
+          <span class="mvd neg">-$1,811</span>
+          <span class="mvp neg">-16.3%</span></div>
+<div class="mv"><span class="mvn">DRAM $80C</span>
+          <span class="mvd neg">-$1,615</span>
+          <span class="mvp neg">-19.6%</span></div>
+<div class="mv"><span class="mvn">YMAX</span>
+          <span class="mvd neg">-$1,303</span>
+          <span class="mvp neg">-35.5%</span></div></div></div>
+</div>
+    <div class="section-label accent-cyan">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/></svg></div>
+      <h2>All Positions</h2><span class="hint">40 holdings &middot; grouped by category</span>
+    </div>
+    <table class="holdings">
+  <thead><tr>
+    <th class="sym">Symbol</th><th class="num">Qty</th><th class="num">Last</th><th class="num">Cost/Sh</th>
+    <th class="num">Mkt Val</th><th class="num">Gain $</th><th class="num">Gain %</th><th class="num">Day $</th><th class="num">% Acct</th>
+  </tr></thead><tbody>
+<tr class="grp"><td colspan="9">LEAPS &middot; LONG-DATED CALLS</td></tr>
+<tr>
+  <td class="sym"><span class="tk">AMD</span><div class="cl">$700C 03/19/27</div></td>
+  <td class="num">1</td>
+  <td class="num">93.00</td>
+  <td class="num dim">111.11</td>
+  <td class="num strong">$9,300.00</td>
+  <td class="num neg">-$1,810.66</td>
+  <td class="num neg">-16.30%</td>
+  <td class="num neg">-$1,660.00</td>
+  <td class="num dim">2.32%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">ARM</span><div class="cl">$500C 03/19/27</div></td>
+  <td class="num">1</td>
+  <td class="num">68.50</td>
+  <td class="num dim">77.31</td>
+  <td class="num strong">$6,850.00</td>
+  <td class="num neg">-$880.66</td>
+  <td class="num neg">-11.39%</td>
+  <td class="num neg">-$625.00</td>
+  <td class="num dim">1.71%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">ASX</span><span class="ccount">2 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$8,700.00</td>
+  <td class="num pos">+$212.05</td>
+  <td class="num pos">+2.50%</td>
+  <td class="num neg">-$1,380.00</td>
+  <td class="num dim">2.17%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$50C 01/15/27</span></td>
+  <td class="num">8</td>
+  <td class="num">7.70</td>
+  <td class="num dim">7.06</td>
+  <td class="num strong">$6,160.00</td>
+  <td class="num pos">+$514.70</td>
+  <td class="num pos">+9.12%</td>
+  <td class="num neg">-$960.00</td>
+  <td class="num dim">1.54%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$55C 01/15/27</span></td>
+  <td class="num">4</td>
+  <td class="num">6.35</td>
+  <td class="num dim">7.11</td>
+  <td class="num strong">$2,540.00</td>
+  <td class="num neg">-$302.65</td>
+  <td class="num neg">-10.65%</td>
+  <td class="num neg">-$420.00</td>
+  <td class="num dim">0.63%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">BE</span><div class="cl">$370C 01/15/27</div></td>
+  <td class="num">1</td>
+  <td class="num">87.03</td>
+  <td class="num dim">87.16</td>
+  <td class="num strong">$8,702.50</td>
+  <td class="num neg">-$13.16</td>
+  <td class="num neg">-0.15%</td>
+  <td class="num neg">-$150.00</td>
+  <td class="num dim">2.17%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">BRKB</span><div class="cl">$520C 03/19/27</div></td>
+  <td class="num">3</td>
+  <td class="num">28.27</td>
+  <td class="num dim">26.21</td>
+  <td class="num strong">$8,482.50</td>
+  <td class="num pos">+$620.51</td>
+  <td class="num pos">+7.89%</td>
+  <td class="num pos">+$75.00</td>
+  <td class="num dim">2.12%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">CELH</span><div class="cl">$37.5C 03/19/27</div></td>
+  <td class="num">15</td>
+  <td class="num">5.53</td>
+  <td class="num dim">5.71</td>
+  <td class="num strong">$8,287.50</td>
+  <td class="num neg">-$272.45</td>
+  <td class="num neg">-3.18%</td>
+  <td class="num neg">-$272.45</td>
+  <td class="num dim">2.07%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">DE</span><span class="ccount">2 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$10,410.00</td>
+  <td class="num pos">+$1,864.68</td>
+  <td class="num pos">+21.82%</td>
+  <td class="num neg">-$415.00</td>
+  <td class="num dim">2.60%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$660C 02/19/27</span></td>
+  <td class="num">1</td>
+  <td class="num">58.95</td>
+  <td class="num dim">37.76</td>
+  <td class="num strong">$5,895.00</td>
+  <td class="num pos">+$2,119.34</td>
+  <td class="num pos">+56.13%</td>
+  <td class="num neg">-$225.00</td>
+  <td class="num dim">1.47%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$680C 01/15/27</span></td>
+  <td class="num">1</td>
+  <td class="num">45.15</td>
+  <td class="num dim">47.70</td>
+  <td class="num strong">$4,515.00</td>
+  <td class="num neg">-$254.66</td>
+  <td class="num neg">-5.34%</td>
+  <td class="num neg">-$190.00</td>
+  <td class="num dim">1.13%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">DELL</span><div class="cl">$550C 03/19/27</div></td>
+  <td class="num">1</td>
+  <td class="num">77.20</td>
+  <td class="num dim">76.11</td>
+  <td class="num strong">$7,720.00</td>
+  <td class="num pos">+$109.34</td>
+  <td class="num pos">+1.44%</td>
+  <td class="num neg">-$120.00</td>
+  <td class="num dim">1.93%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">DRAM</span><div class="cl">$80C 03/19/27</div></td>
+  <td class="num">4</td>
+  <td class="num">16.60</td>
+  <td class="num dim">20.64</td>
+  <td class="num strong">$6,640.00</td>
+  <td class="num neg">-$1,614.65</td>
+  <td class="num neg">-19.56%</td>
+  <td class="num neg">-$1,820.00</td>
+  <td class="num dim">1.66%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">GOOGL</span><span class="ccount">3 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$11,660.00</td>
+  <td class="num neg">-$337.98</td>
+  <td class="num neg">-2.82%</td>
+  <td class="num pos">+$425.00</td>
+  <td class="num dim">2.91%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$350C 03/19/27</span></td>
+  <td class="num">1</td>
+  <td class="num">54.35</td>
+  <td class="num dim">44.41</td>
+  <td class="num strong">$5,435.00</td>
+  <td class="num pos">+$994.34</td>
+  <td class="num pos">+22.39%</td>
+  <td class="num pos">+$220.00</td>
+  <td class="num dim">1.36%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$390C 01/15/27</span></td>
+  <td class="num">1</td>
+  <td class="num">29.35</td>
+  <td class="num dim">35.01</td>
+  <td class="num strong">$2,935.00</td>
+  <td class="num neg">-$565.66</td>
+  <td class="num neg">-16.16%</td>
+  <td class="num pos">+$137.50</td>
+  <td class="num dim">0.73%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$400C 03/19/27</span></td>
+  <td class="num">1</td>
+  <td class="num">32.90</td>
+  <td class="num dim">40.57</td>
+  <td class="num strong">$3,290.00</td>
+  <td class="num neg">-$766.66</td>
+  <td class="num neg">-18.90%</td>
+  <td class="num pos">+$67.50</td>
+  <td class="num dim">0.82%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">HIMS</span><div class="cl">$44C 01/15/27</div></td>
+  <td class="num">5</td>
+  <td class="num">8.78</td>
+  <td class="num dim">6.31</td>
+  <td class="num strong">$4,387.50</td>
+  <td class="num pos">+$1,234.19</td>
+  <td class="num pos">+39.14%</td>
+  <td class="num pos">+$825.00</td>
+  <td class="num dim">1.09%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">HOOD</span><div class="cl">$130C 03/19/27</div></td>
+  <td class="num">4</td>
+  <td class="num">19.65</td>
+  <td class="num dim">20.46</td>
+  <td class="num strong">$7,860.00</td>
+  <td class="num neg">-$322.65</td>
+  <td class="num neg">-3.94%</td>
+  <td class="num pos">+$1,650.00</td>
+  <td class="num dim">1.96%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">INTC</span><div class="cl">$150C 03/19/27</div></td>
+  <td class="num">3</td>
+  <td class="num">30.48</td>
+  <td class="num dim">27.61</td>
+  <td class="num strong">$9,142.50</td>
+  <td class="num pos">+$860.51</td>
+  <td class="num pos">+10.39%</td>
+  <td class="num neg">-$2,077.50</td>
+  <td class="num dim">2.28%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">LB</span><div class="cl">$95C 02/19/27</div></td>
+  <td class="num">6</td>
+  <td class="num">8.35</td>
+  <td class="num dim">10.01</td>
+  <td class="num strong">$5,010.00</td>
+  <td class="num neg">-$993.97</td>
+  <td class="num neg">-16.56%</td>
+  <td class="num neg">-$840.00</td>
+  <td class="num dim">1.25%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">MRNA</span><div class="cl">$80C 03/19/27</div></td>
+  <td class="num">2</td>
+  <td class="num">17.57</td>
+  <td class="num dim">13.36</td>
+  <td class="num strong">$3,515.00</td>
+  <td class="num pos">+$843.68</td>
+  <td class="num pos">+31.58%</td>
+  <td class="num pos">+$255.00</td>
+  <td class="num dim">0.88%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">MRVL</span><div class="cl">$350C 03/19/27</div></td>
+  <td class="num">1</td>
+  <td class="num">66.30</td>
+  <td class="num dim">75.61</td>
+  <td class="num strong">$6,630.00</td>
+  <td class="num neg">-$930.66</td>
+  <td class="num neg">-12.31%</td>
+  <td class="num neg">-$1,230.00</td>
+  <td class="num dim">1.65%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">NBIS</span><div class="cl">$300C 03/19/27</div></td>
+  <td class="num">1</td>
+  <td class="num">73.25</td>
+  <td class="num dim">95.61</td>
+  <td class="num strong">$7,325.00</td>
+  <td class="num neg">-$2,235.66</td>
+  <td class="num neg">-23.38%</td>
+  <td class="num neg">-$2,652.50</td>
+  <td class="num dim">1.83%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">NOK</span><span class="ccount">2 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$6,490.00</td>
+  <td class="num neg">-$1,313.23</td>
+  <td class="num neg">-16.83%</td>
+  <td class="num neg">-$530.00</td>
+  <td class="num dim">1.62%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$15C 06/17/27</span></td>
+  <td class="num">13</td>
+  <td class="num">3.15</td>
+  <td class="num dim">3.62</td>
+  <td class="num strong">$4,095.00</td>
+  <td class="num neg">-$606.61</td>
+  <td class="num neg">-12.90%</td>
+  <td class="num neg">-$325.00</td>
+  <td class="num dim">1.02%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$16C 03/19/27</span></td>
+  <td class="num">10</td>
+  <td class="num">2.40</td>
+  <td class="num dim">3.10</td>
+  <td class="num strong">$2,395.00</td>
+  <td class="num neg">-$706.62</td>
+  <td class="num neg">-22.78%</td>
+  <td class="num neg">-$205.00</td>
+  <td class="num dim">0.60%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">NOW</span><div class="cl">$125C 03/19/27</div></td>
+  <td class="num">5</td>
+  <td class="num">16.10</td>
+  <td class="num dim">16.31</td>
+  <td class="num strong">$8,050.00</td>
+  <td class="num neg">-$103.32</td>
+  <td class="num neg">-1.27%</td>
+  <td class="num neg">-$103.32</td>
+  <td class="num dim">2.01%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">NVDA</span><div class="cl">$210C 03/19/27</div></td>
+  <td class="num">4</td>
+  <td class="num">26.32</td>
+  <td class="num dim">28.22</td>
+  <td class="num strong">$10,530.00</td>
+  <td class="num neg">-$757.65</td>
+  <td class="num neg">-6.71%</td>
+  <td class="num neg">-$104.49</td>
+  <td class="num dim">2.63%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">ON</span><div class="cl">$120C 03/19/27</div></td>
+  <td class="num">2</td>
+  <td class="num">17.95</td>
+  <td class="num dim">32.01</td>
+  <td class="num strong">$3,590.00</td>
+  <td class="num neg">-$2,811.32</td>
+  <td class="num neg">-43.92%</td>
+  <td class="num pos">+$135.00</td>
+  <td class="num dim">0.90%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">RBRK</span><span class="ccount">3 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$9,315.00</td>
+  <td class="num pos">+$1,765.37</td>
+  <td class="num pos">+23.38%</td>
+  <td class="num pos">+$640.00</td>
+  <td class="num dim">2.32%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$100C 01/15/27</span></td>
+  <td class="num">4</td>
+  <td class="num">11.55</td>
+  <td class="num dim">8.71</td>
+  <td class="num strong">$4,620.00</td>
+  <td class="num pos">+$1,137.35</td>
+  <td class="num pos">+32.66%</td>
+  <td class="num pos">+$480.00</td>
+  <td class="num dim">1.15%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$82.5C 01/15/27</span></td>
+  <td class="num">1</td>
+  <td class="num">18.05</td>
+  <td class="num dim">13.86</td>
+  <td class="num strong">$1,805.00</td>
+  <td class="num pos">+$419.34</td>
+  <td class="num pos">+30.26%</td>
+  <td class="num pos">+$130.00</td>
+  <td class="num dim">0.45%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$90C 01/15/27</span></td>
+  <td class="num">2</td>
+  <td class="num">14.45</td>
+  <td class="num dim">13.41</td>
+  <td class="num strong">$2,890.00</td>
+  <td class="num pos">+$208.68</td>
+  <td class="num pos">+7.78%</td>
+  <td class="num pos">+$30.00</td>
+  <td class="num dim">0.72%</td>
+</tr>
+<tr class="tgrp">
+  <td class="sym"><span class="tk">SOFI</span><span class="ccount">3 CONTRACTS</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$9,612.50</td>
+  <td class="num neg">-$179.05</td>
+  <td class="num neg">-1.83%</td>
+  <td class="num pos">+$687.50</td>
+  <td class="num dim">2.40%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$20C 06/17/27</span></td>
+  <td class="num">10</td>
+  <td class="num">4.55</td>
+  <td class="num dim">4.76</td>
+  <td class="num strong">$4,550.00</td>
+  <td class="num neg">-$206.62</td>
+  <td class="num neg">-4.34%</td>
+  <td class="num pos">+$350.00</td>
+  <td class="num dim">1.14%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$22C 06/17/27</span></td>
+  <td class="num">5</td>
+  <td class="num">3.88</td>
+  <td class="num dim">3.44</td>
+  <td class="num strong">$1,937.50</td>
+  <td class="num pos">+$219.19</td>
+  <td class="num pos">+12.76%</td>
+  <td class="num pos">+$137.50</td>
+  <td class="num dim">0.48%</td>
+</tr>
+<tr class="child">
+  <td class="sym kid"><span class="conn">&#9492;</span><span class="cl">$25C 06/17/27</span></td>
+  <td class="num">10</td>
+  <td class="num">3.12</td>
+  <td class="num dim">3.32</td>
+  <td class="num strong">$3,125.00</td>
+  <td class="num neg">-$191.62</td>
+  <td class="num neg">-5.78%</td>
+  <td class="num pos">+$200.00</td>
+  <td class="num dim">0.78%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">TEM</span><div class="cl">$70C 01/15/27</div></td>
+  <td class="num">5</td>
+  <td class="num">11.38</td>
+  <td class="num dim">6.56</td>
+  <td class="num strong">$5,687.50</td>
+  <td class="num pos">+$2,409.19</td>
+  <td class="num pos">+73.49%</td>
+  <td class="num pos">+$950.00</td>
+  <td class="num dim">1.42%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">TWLO</span><div class="cl">$250C 03/19/27</div></td>
+  <td class="num">2</td>
+  <td class="num">32.65</td>
+  <td class="num dim">33.10</td>
+  <td class="num strong">$6,530.00</td>
+  <td class="num neg">-$89.33</td>
+  <td class="num neg">-1.35%</td>
+  <td class="num neg">-$89.33</td>
+  <td class="num dim">1.63%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">UNH</span><div class="cl">$440C 03/19/27</div></td>
+  <td class="num">2</td>
+  <td class="num">45.92</td>
+  <td class="num dim">39.51</td>
+  <td class="num strong">$9,185.00</td>
+  <td class="num pos">+$1,283.68</td>
+  <td class="num pos">+16.25%</td>
+  <td class="num pos">+$1,255.00</td>
+  <td class="num dim">2.29%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">UPST</span><div class="cl">$40C 03/19/27</div></td>
+  <td class="num">8</td>
+  <td class="num">9.30</td>
+  <td class="num dim">9.46</td>
+  <td class="num strong">$7,440.00</td>
+  <td class="num neg">-$125.31</td>
+  <td class="num neg">-1.66%</td>
+  <td class="num neg">-$125.31</td>
+  <td class="num dim">1.86%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">VLO</span><div class="cl">$280C 01/15/27</div></td>
+  <td class="num">3</td>
+  <td class="num">27.15</td>
+  <td class="num dim">27.31</td>
+  <td class="num strong">$8,145.00</td>
+  <td class="num neg">-$46.99</td>
+  <td class="num neg">-0.57%</td>
+  <td class="num neg">-$46.99</td>
+  <td class="num dim">2.03%</td>
+</tr>
+<tr class="sub"><td class="sym"><span class="subname">LEAPS subtotal</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$215,197.50</td>
+  <td class="num neg">-$3,635.50</td>
+  <td class="num neg">-1.66%</td>
+  <td class="num neg">-$7,344.39</td><td></td>
+</tr>
+<tr class="grp"><td colspan="9">STOCK & FUNDS &middot; EQUITY HOLDINGS</td></tr>
+<tr>
+  <td class="sym"><span class="tk">SNDK</span> <span class="ttag">SHARES</span></td>
+  <td class="num">1</td>
+  <td class="num">2,062.00</td>
+  <td class="num dim">240.15</td>
+  <td class="num strong">$2,062.00</td>
+  <td class="num pos">+$1,821.85</td>
+  <td class="num pos">+758.63%</td>
+  <td class="num neg">-$211.73</td>
+  <td class="num dim">0.51%</td>
+</tr>
+<tr>
+  <td class="sym"><span class="tk">YMAX</span> <span class="ttag">FUND</span></td>
+  <td class="num">295.837</td>
+  <td class="num">7.99</td>
+  <td class="num dim">12.40</td>
+  <td class="num strong">$2,363.73</td>
+  <td class="num neg">-$1,303.49</td>
+  <td class="num neg">-35.54%</td>
+  <td class="num neg">-$26.63</td>
+  <td class="num dim">0.59%</td>
+</tr>
+<tr class="sub"><td class="sym"><span class="subname">STOCK &amp; FUNDS subtotal</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$4,425.73</td>
+  <td class="num pos">+$518.36</td>
+  <td class="num pos">+13.27%</td>
+  <td class="num neg">-$238.36</td><td></td>
+</tr>
+<tr class="grp"><td colspan="9">VOLATILITY HEDGE &middot; TAIL-RISK HEDGE</td></tr>
+<tr>
+  <td class="sym"><span class="tk">VIX</span> <span class="ttag">HEDGE</span><div class="cl">$20C 08/19/26</div></td>
+  <td class="num">15</td>
+  <td class="num">1.90</td>
+  <td class="num dim">2.73</td>
+  <td class="num strong">$2,850.00</td>
+  <td class="num neg">-$1,246.23</td>
+  <td class="num neg">-30.42%</td>
+  <td class="num pos">+$142.50</td>
+  <td class="num dim">0.71%</td>
+</tr>
+<tr class="sub"><td class="sym"><span class="subname">VOLATILITY HEDGE subtotal</span></td>
+  <td class="num"></td><td class="num"></td><td class="num"></td>
+  <td class="num strong">$2,850.00</td>
+  <td class="num neg">-$1,246.23</td>
+  <td class="num neg">-30.42%</td>
+  <td class="num pos">+$142.50</td><td></td>
+</tr>
+</tbody></table>
+  </div>
+  <div class="foot">
+    <div class="fnotes">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Open gain shown is unrealized; realized P&amp;L tracked separately.</span>
+    </div>
+    <div class="wordmark">THE MARKET BISHOP</div>
+  </div>
+</div>
+<div class="sheet">
+  <div class="head">
+    <div class="brandrow">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#00dcff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.8L20 8l-4 3.9.9 5.5L12 15l-4.9 2.4L8 11.9 4 8l5.6-1.2z"/></svg></div>
+      <div class="brandtext"><h1>The Market Bishop</h1><span class="sub">REALIZED P&amp;L &middot; YEAR TO DATE — THROUGH JUL 1</span></div>
+      <div class="pill"><span class="dot"></span>JUL 1 2026</div>
+    </div>
+    <p class="tag">Realized profit and loss on closed trades — every round-trip booked in the period. The open book above is tracked separately.</p>
+  </div>
+  <div class="hero">
+    <div class="hcard big"><div class="hlabel">REALIZED P&amp;L</div><div class="hval pos">+$122,621.98</div><div class="hsub">+10.1% on capital cycled</div></div>
+    <div class="hcard"><div class="hlabel">CLOSED TRADES</div><div class="hval white">238</div><div class="hsub">158W / 80L</div></div>
+    <div class="hcard"><div class="hlabel">WIN RATE</div><div class="hval cyan">66%</div><div class="hsub">since period start</div></div>
+    <div class="hcard"><div class="hlabel">PROFIT FACTOR</div><div class="hval pos">2.69x</div><div class="hsub">gross win &divide; loss</div></div>
+    <div class="hcard"><div class="hlabel">AVG WIN / LOSS</div><div class="hval white" style="font-size:20px">+$1,236 <span style="color:var(--muted2);font-size:14px">/</span> -$909</div><div class="hsub">1.4x ratio</div></div>
+  </div>
+  <div class="body">
+    <div class="section-label accent-green">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="14" y="6" width="3" height="11"/></svg></div>
+      <h2>Monthly Realized P&amp;L</h2><span class="hint">green = up month &middot; red = down month</span>
+    </div>
+    <div class="mbars"><div class="mrow">
+  <div class="ml">JAN</div>
+  <div class="mtrack"><div class="mbar pos" style="width:13.3%"></div></div>
+  <div class="mval"><span class="wl">30W&middot;11L</span>
+    <span class="pos">+$15,245</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">FEB</div>
+  <div class="mtrack"><div class="mbar neg" style="width:4.9%"></div></div>
+  <div class="mval"><span class="wl">4W&middot;10L</span>
+    <span class="neg">-$5,632</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">MAR</div>
+  <div class="mtrack"><div class="mbar neg" style="width:8.4%"></div></div>
+  <div class="mval"><span class="wl">19W&middot;22L</span>
+    <span class="neg">-$9,655</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">APR</div>
+  <div class="mtrack"><div class="mbar pos" style="width:20.0%"></div></div>
+  <div class="mval"><span class="wl">41W&middot;10L</span>
+    <span class="pos">+$22,949</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">MAY</div>
+  <div class="mtrack"><div class="mbar pos" style="width:36.4%"></div></div>
+  <div class="mval"><span class="wl">28W&middot;1L</span>
+    <span class="pos">+$41,759</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">JUN</div>
+  <div class="mtrack"><div class="mbar pos" style="width:50.0%"></div></div>
+  <div class="mval"><span class="wl">34W&middot;23L</span>
+    <span class="pos">+$57,335</span></div>
+</div>
+<div class="mrow">
+  <div class="ml">JUL</div>
+  <div class="mtrack"><div class="mbar pos" style="width:0.5%"></div></div>
+  <div class="mval"><span class="wl">2W&middot;3L</span>
+    <span class="pos">+$620</span></div>
+</div></div>
+    <div class="section-label accent-cyan">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div>
+      <h2>P&amp;L by Ticker</h2><span class="hint">net realized</span>
+    </div>
+    <div class="splitcols">
+      <div><div class="colhd g">TOP CONTRIBUTORS</div><div class="tkrow"><div class="tn">ARM</div>
+  <div class="tkt"><div class="tkb pos" style="width:100.0%"></div></div>
+  <div class="tkv pos">+$13,035</div></div>
+<div class="tkrow"><div class="tn">MRNA</div>
+  <div class="tkt"><div class="tkb pos" style="width:94.8%"></div></div>
+  <div class="tkv pos">+$12,356</div></div>
+<div class="tkrow"><div class="tn">NBIS</div>
+  <div class="tkt"><div class="tkb pos" style="width:92.0%"></div></div>
+  <div class="tkv pos">+$11,991</div></div>
+<div class="tkrow"><div class="tn">GLW</div>
+  <div class="tkt"><div class="tkb pos" style="width:86.3%"></div></div>
+  <div class="tkv pos">+$11,254</div></div>
+<div class="tkrow"><div class="tn">SNDK</div>
+  <div class="tkt"><div class="tkb pos" style="width:85.5%"></div></div>
+  <div class="tkv pos">+$11,145</div></div>
+<div class="tkrow"><div class="tn">CAT</div>
+  <div class="tkt"><div class="tkb pos" style="width:66.6%"></div></div>
+  <div class="tkv pos">+$8,682</div></div>
+<div class="tkrow"><div class="tn">QCOM</div>
+  <div class="tkt"><div class="tkb pos" style="width:63.9%"></div></div>
+  <div class="tkv pos">+$8,324</div></div>
+<div class="tkrow"><div class="tn">MU</div>
+  <div class="tkt"><div class="tkb pos" style="width:61.5%"></div></div>
+  <div class="tkv pos">+$8,021</div></div></div>
+      <div><div class="colhd r">BIGGEST DRAGS</div><div class="tkrow"><div class="tn">ORCL</div>
+  <div class="tkt"><div class="tkb neg" style="width:28.6%"></div></div>
+  <div class="tkv neg">-$3,725</div></div>
+<div class="tkrow"><div class="tn">GIS</div>
+  <div class="tkt"><div class="tkb neg" style="width:23.8%"></div></div>
+  <div class="tkv neg">-$3,099</div></div>
+<div class="tkrow"><div class="tn">NOW</div>
+  <div class="tkt"><div class="tkb neg" style="width:18.9%"></div></div>
+  <div class="tkv neg">-$2,459</div></div>
+<div class="tkrow"><div class="tn">INTC</div>
+  <div class="tkt"><div class="tkb neg" style="width:17.0%"></div></div>
+  <div class="tkv neg">-$2,213</div></div>
+<div class="tkrow"><div class="tn">MCHP</div>
+  <div class="tkt"><div class="tkb neg" style="width:16.4%"></div></div>
+  <div class="tkv neg">-$2,132</div></div></div>
+    </div>
+    <div class="section-label accent-amber">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg></div>
+      <h2>Best &amp; Worst Trades</h2><span class="hint">single closed positions</span>
+    </div>
+    <div class="grid">
+      <div class="card green"><div class="cmd"><span class="slash">&#9650;</span>Top Winners</div><div class="mvlist"><div class="mv"><span class="mvn">GLW $290C</span>
+  <span class="mvd pos">+$6,462</span>
+  <span class="mvp pos">+83.5%</span></div>
+<div class="mv"><span class="mvn">QCOM $200C</span>
+  <span class="mvd pos">+$5,848</span>
+  <span class="mvp pos">+219.4%</span></div>
+<div class="mv"><span class="mvn">MRVL $230C</span>
+  <span class="mvd pos">+$5,844</span>
+  <span class="mvp pos">+98.4%</span></div>
+<div class="mv"><span class="mvn">OUST $60C</span>
+  <span class="mvd pos">+$5,783</span>
+  <span class="mvp pos">+95.5%</span></div>
+<div class="mv"><span class="mvn">MU</span>
+  <span class="mvd pos">+$5,103</span>
+  <span class="mvp pos">+95.0%</span></div></div></div>
+      <div class="card" style="--accent:#ff4d52"><div class="cmd"><span class="slash" style="color:#ff4d52">&#9660;</span>Top Losers</div><div class="mvlist"><div class="mv"><span class="mvn">GIS</span>
+  <span class="mvd neg">-$3,099</span>
+  <span class="mvp neg">-22.1%</span></div>
+<div class="mv"><span class="mvn">QCOM $270C</span>
+  <span class="mvd neg">-$3,033</span>
+  <span class="mvp neg">-42.1%</span></div>
+<div class="mv"><span class="mvn">IREN $70C</span>
+  <span class="mvd neg">-$2,881</span>
+  <span class="mvp neg">-61.7%</span></div>
+<div class="mv"><span class="mvn">MSFT $525C</span>
+  <span class="mvd neg">-$2,182</span>
+  <span class="mvp neg">-47.0%</span></div>
+<div class="mv"><span class="mvn">BIDU $150C</span>
+  <span class="mvd neg">-$2,163</span>
+  <span class="mvp neg">-40.9%</span></div></div></div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="fnotes">
+      <span>Realized on closed trades only &middot; options +$54,967 &middot; shares/ETFs +$67,655.</span>
+      <span>238 round-trips &middot; $1,340K proceeds cycled &middot; win rate 66%.</span>
+    </div>
+    <div class="wordmark">THE MARKET BISHOP</div>
+  </div>
+</div>
+</body></html>
